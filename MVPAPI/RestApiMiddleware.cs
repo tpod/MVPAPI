@@ -53,8 +53,6 @@ public class RestApiMiddleware
         var path = context.Request.Path.Value?.Split('/', StringSplitOptions.RemoveEmptyEntries);
 
         var obj = path.FirstOrDefault();
-        
-        //test
 
         if (string.IsNullOrEmpty(obj))
         {
