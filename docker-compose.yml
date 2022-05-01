@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: MVPAPI/Dockerfile
+    container_name: mvp-api
+    ports:
+      - 8080:80
+    working_dir: /app
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DB_CONNECTION_STRING: "User ID=postgres;Password=example;Host=postgres;Port=5432;Database=MVP;"
+    depends_on: 
+      - postgres
+    networks: 
+      - docker-dev
+  
+  postgres:
+    image: postgres
+    container_name: postgres-db
+    restart: always
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+    ports:
+      - 5432
+    environment:
+      POSTGRES_PASSWORD: "example"
+    networks:
+      - docker-dev
+
+  adminer:
+    image: adminer
+    container_name: adminer-ui
+    restart: always
+    ports:
+      - 8081:8080
+    depends_on:
+      - postgres
+    networks:
+      - docker-dev
+
+volumes:
+  postgres-volume:
+    
+networks:
+  docker-dev:
